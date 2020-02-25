@@ -19,7 +19,7 @@ pub enum Error {
 impl Error {
     pub fn is_not_found(&self) -> bool {
         if let Self::IOError { source, .. } = self {
-            return source.kind() == std::io::ErrorKind::NotFound
+            return source.kind() == std::io::ErrorKind::NotFound;
         }
         false
     }
@@ -39,6 +39,7 @@ pub struct Stat {
 pub struct HwmonTemperature {
     pub name: String,
     pub value: f32,
+    pub value_path: String,
 
     pub high: Option<f32>,
     pub critical: Option<f32>,
@@ -69,7 +70,8 @@ impl Stat {
                 .join("name"),
         )
         .await?;
-        let value = read_as_float(format!("{}_input", base)).await? / 1000.;
+        let value_path = format!("{}_input", base);
+        let value = read_as_float(&value_path).await? / 1000.;
 
         let high = read_as_float(format!("{}_max", base))
             .await
@@ -86,6 +88,7 @@ impl Stat {
             high,
             critical,
             label,
+            value_path,
         })
     }
 
