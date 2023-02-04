@@ -13,4 +13,4 @@ glob = "0.3"
 log = "0.4"
 serde = { version = "1.0", features = ["derive"] }
 snafu = "0.6"
-tokio = { version = "0.2", features = ["full"] }
+tokio = { version = "1.13", features = ["full"] }
